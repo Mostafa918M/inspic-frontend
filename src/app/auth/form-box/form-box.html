@@ -1,0 +1,52 @@
+<div class="min-h-screen bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
+  <div class="grid min-h-screen grid-cols-1 md:grid-cols-2">
+
+    <!-- LEFT -->
+    <aside class="flex flex-col justify-between border-t md:border-t-0 md:border-r border-neutral-200/70 dark:border-neutral-800 bg-neutral-100 dark:bg-white/5 p-8 md:p-12">
+      <h3 class="text-xl font-semibold tracking-tight">Welcome!</h3>
+
+      <!-- Big circle/logo -->
+      <div class="flex justify-center ">
+        <img src="8.png"  alt="Inspic logo" width="200"/>
+      </div>
+
+      <div class="text-sm text-neutral-600 dark:text-neutral-300">
+        @if (is('sign-in')) {
+          <span>Not a member yet? </span><a class="font-medium text-neutral-900 dark:text-white hover:underline" routerLink="/auth/sign-up">Register now</a>
+        } @else if (is('sign-up')) {
+          <span>Are you a member? </span><a class="font-medium text-neutral-900 dark:text-white hover:underline" routerLink="/auth/sign-in">Sign In</a>
+        } @else if(is('forgot-password')) {
+          <span>Remembered it? </span>Back to<a class="ml-1 font-medium text-neutral-900 dark:text-white hover:underline" routerLink="/auth/sign-in"> Sign In</a>
+        } @else if (is('verify-email')) {
+          <span>
+            Wrong email? <a class="font-medium text-neutral-900 dark:text-white hover:underline" routerLink="/auth/sign-up">Create a new account</a> or Back
+            to <a class="font-medium text-neutral-900 dark:text-white hover:underline" routerLink="/auth/sign-in">Sign In</a></span>
+        }
+      </div>
+    </aside>
+
+    <!-- RIGHT -->
+    <section class="flex items-center bg-white dark:bg-neutral-950">
+      <div class="w-full max-w-md mx-auto px-6">
+        <header class="mt-10 md:mt-0">
+          @if (is('sign-up')) {
+            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Register with your e-mail</h2>
+          } @else if (is('sign-in')) {
+            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Log in</h2>
+          } @else if (is('verify-email')) {
+            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Verify your email</h2>
+          } @else if( is('forgot-password')) {
+            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Forget your password?</h2>
+          } @else {
+            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Forgot your password?</h2>
+          }
+        </header>
+
+        <div class="pt-4 pb-14">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>

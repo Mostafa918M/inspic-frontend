@@ -1,0 +1,130 @@
+<header
+  class="sticky top-0 z-50 w-full  bg-neutral-100/30 backdrop-blur"
+>
+  <div
+    class="mx-auto flex h-14 max-w-7xl items-center gap-4 px-3 md:h-16 md:gap-6"
+  >
+    <!-- Left: Logo + Nav -->
+    <div class="flex items-center gap-5">
+      <a
+        href="/"
+        aria-label="Logo"
+        class="text-2xl font-black tracking-tight text-neutral-900"
+      >
+        <img src="8_1.png" width="30" />
+      </a>
+
+
+    </div>
+
+    <!-- Center: Search -->
+    <div class="flex-1">
+      <label class="relative block">
+        <span
+          class="pointer-events-none absolute inset-y-0 left-3 flex items-center"
+        >
+          <svg
+            class="h-4 w-4 text-neutral-500"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <circle cx="11" cy="11" r="7" stroke-width="2"></circle>
+            <path
+              d="M20 20l-3.5-3.5"
+              stroke-width="2"
+              stroke-linecap="round"
+            ></path>
+          </svg>
+        </span>
+        <input
+          type="text"
+          placeholder="Search by Inspiration"
+          class="w-full rounded-xl border border-neutral-300 bg-neutral-200/60 pl-9 pr-3 py-2 text-sm placeholder:text-neutral-500 focus:border-neutral-400 focus:bg-white focus:outline-none"
+        />
+      </label>
+    </div>
+
+    <!-- Right: Buttons + Avatar -->
+    <div class="flex items-center gap-2">
+      <!-- Avatar + Profile dropdown -->
+      <div class="relative" data-profile>
+        <button
+          class="inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-1 ring-neutral-300 cursor-pointer"
+          (click)="toggleProfile()"
+          aria-haspopup="menu"
+          [attr.aria-expanded]="profileOpen"
+        >
+          @if (avatarUrl) {
+      <img [src]="avatarUrl" (error)="onAvatarError($event)" alt="profile" class="h-full w-full object-cover" />
+    } @else {
+      <img src="assets/avatar-fallback.png" alt="profile" class="h-full w-full object-cover" />
+    }
+        </button>
+
+        @if (profileOpen) {
+        <div
+          role="menu"
+          class="absolute right-0 mt-2 w-64 overflow-hidden rounded-xl bg-neutral-900 text-neutral-100 shadow-xl ring-1 ring-black/20"
+        >
+              <div class="px-4 py-3 text-sm text-neutral-300">
+        Signed in as <span class="font-medium text-white">{{ displayName }}</span>
+      </div>
+      <div class="h-px bg-neutral-800"></div>
+
+
+          <!-- Primary -->
+          <nav class="py-2">
+            @for (item of profilePrimary; track item.label) {
+            <a
+              [routerLink]="item.route"
+              role="menuitem"
+              class="block px-4 py-2 text-sm hover:bg-neutral-800/70"
+            >
+              {{ item.label }}
+            </a>
+            }
+          </nav>
+
+          <div class="h-px bg-neutral-800"></div>
+
+          <div class="h-px bg-neutral-800"></div>
+
+          <nav class="py-2">
+            <button
+              type="button"
+              (click)="onSignOut()"
+              role="menuitem"
+              class="block w-full px-4 py-2 text-left text-sm hover:bg-neutral-800/70 cursor-pointer"
+            >
+              Logout
+            </button>
+          </nav>
+        </div>
+        }
+      </div>
+      <button
+        class="hidden sm:inline-flex h-9 items-center justify-center rounded-full bg-rose-600 px-3 text-sm text-white hover:opacity-90"
+      >
+        Create
+      </button>
+      <!-- Mobile hamburger -->
+      <button
+        class="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-200/70"
+      >
+        <svg
+          class="h-5 w-5"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          fill="none"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-width="2"
+            d="M4 7h16M4 12h16M4 17h16"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>

@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+
+
+/* Pinterest-like masonry using CSS columns */
+@layer utilities {
+  .masonry { column-gap: 1rem; }
+  .masonry-1 { columns: 1; }
+  .masonry-2 { columns: 2; }
+  .masonry-3 { columns: 3; }
+  .masonry-4 { columns: 4; }
+  .break-inside { break-inside: avoid; }
+
+  /* Soft edge fade (used on the horizontal hero rail) */
+  .mask-x-fade {
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+  
+  
+}
+

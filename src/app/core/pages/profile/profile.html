@@ -1,0 +1,39 @@
+<!-- profile.html -->
+<app-nav-header></app-nav-header>
+  <h1>Your Profile</h1>
+
+  @if (loading) {
+    <div class="notice muted">Loading…</div>
+  } @else {
+    @if (errorMsg) { <div class="notice error">{{ errorMsg }}</div> }
+
+    @if (u) {
+      <div class="card">
+        <div class="header">
+          @if (u.avatar) {
+            <img [src]="u.avatar" alt="avatar" class="avatar" />
+          } @else {
+            <div class="avatar fallback">{{ avatarFallback(u.username) }}</div>
+          }
+          <div class="who">
+            <div class="name">{{ fullName(u) }}</div>
+            <div class="username">@{{ u.username }}</div>
+            <div class="email">{{ u.email }}</div>
+            <span class="role">{{ u.role }}</span>
+          </div>
+        </div>
+
+
+        <div class="stats">
+          <div><strong>{{ u.followers?.length || 0 }}</strong><span>Followers</span></div>
+          <div><strong>{{ u.following?.length || 0 }}</strong><span>Following</span></div>
+          <div><strong>{{ u.boards?.length || 0 }}</strong><span>Boards</span></div>
+          <div><strong>{{ u.pins?.length || 0 }}</strong><span>Pins</span></div>
+          <div><strong>{{ u.bookmarks?.length || 0 }}</strong><span>Bookmarks</span></div>
+          <div><strong>{{ u.likedPins?.length || 0 }}</strong><span>Liked</span></div>
+          <div><strong>{{ u.savedSearches?.length || 0 }}</strong><span>Saved searches</span></div>
+        </div>
+      </div>
+    }
+  }
+

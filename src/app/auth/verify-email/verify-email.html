@@ -1,0 +1,31 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+  @if (email()) { <p class="muted">We sent a code to <strong>{{ email() }}</strong></p> }
+
+  <div class="field">
+    <label for="code">Verification code</label>
+    <input id="code" type="text" inputmode="numeric" maxlength="6" formControlName="code" placeholder="Enter 6-digit code"/>
+    @if (form.get('code')?.touched && form.get('code')?.invalid) {
+      <ul class="errors">
+        @if (form.get('code')?.hasError('required')) { <li>Code is required.</li> }
+        @if (form.get('code')?.hasError('pattern')) { <li>Enter a valid 6-digit code.</li> }
+      </ul>
+    }
+  </div>
+
+  <button type="submit" [disabled]="form.invalid || loading()">
+    {{ loading() ? 'Verifying…' : 'Verify email' }}
+  </button>
+
+  <div class="divider"><span>or</span></div>
+
+  <button class="btn-secondary" type="button"
+          (click)="resend()"
+          [disabled]="!email() || loading() || cooldown() > 0">
+    @if (cooldown() > 0) { Resend in {{ cooldown() }}s } @else { Resend code }
+  </button>
+
+  @if (successMsg()) { <p class="success">{{ successMsg() }}</p> }
+  @if (errorMsg())   { <p class="error">{{ errorMsg() }}</p> }
+
+
+</form>

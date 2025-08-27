@@ -1,0 +1,11 @@
+<div class="form">
+  <h3>Resending verification code…</h3>
+
+  @if (loading()) { <p class="muted">Please wait.</p> }
+  @if (success()) { <p class="success">{{ success() }}</p> }
+  @if (error())   { <p class="error">{{ error() }}</p> }
+
+  <p class="small">
+    <a [routerLink]="['/verify-email']" [queryParams]="{ email: email() }">Back to Verify</a>
+  </p>
+</div>

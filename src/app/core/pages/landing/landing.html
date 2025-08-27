@@ -1,0 +1,131 @@
+<div class="min-h-screen bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
+
+  <header class="sticky top-0 z-50 bg-white/70 dark:bg-neutral-950/60 backdrop-blur border-b border-neutral-200/60 dark:border-neutral-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-6">
+        <a class="font-black tracking-tighter2 text-2xl" href="/" aria-label="Inspic">
+            <img src="8_1.png" class="inline h-8 w-8 mr-1" alt="Inspic logo" />
+         
+        </a>
+        <nav class="hidden md:flex items-center gap-5 text-sm text-neutral-600 dark:text-neutral-300">
+          <a class="hover:text-neutral-900 dark:hover:text-white transition" routerLink="auth/sign-up">Explore</a>
+          <a class="hover:text-neutral-900 dark:hover:text-white transition" routerLink="about">About</a>
+          <a class="hover:text-neutral-900 dark:hover:text-white transition" routerLink="auth/sign-up">Create</a>
+          <a class="hover:text-neutral-900 dark:hover:text-white transition" routerLink="news">News</a>
+        </nav>
+      </div>
+
+
+      <div class="flex items-center gap-3">
+        <button  class="hidden sm:inline-flex items-center justify-center h-9 px-4 rounded-full border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition cursor-pointer" routerLink="auth/sign-in">
+          Log in
+        </button>
+        <button class="h-9 px-4 rounded-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 hover:opacity-90 transition cursor-pointer" routerLink="auth/sign-up">
+          Sign up
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section class="relative">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <p class="uppercase tracking-widest text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 mb-4">
+        Site feeling / Today’s inspiration
+      </p>
+
+      <h1 class="font-black font-display leading-[0.9] tracking-tighter2
+                 text-5xl sm:text-7xl md:text-8xl lg:text-[9rem]">
+        GET YOUR NEXT
+        <span class="block text-rose-600">HOME DECOR<br class="hidden sm:block"> IDEA</span>
+      </h1>
+
+      <p class="mt-6 max-w-2xl text-lg text-neutral-600 dark:text-neutral-300">
+        A curated stream of ideas powered by Inspic creators. Save what you love, and we’ll tune the feed for you.
+      </p>
+
+      <div class="mt-6 flex items-center gap-2">
+        <span class="h-2 w-2 rounded-full bg-neutral-900 dark:bg-neutral-100"></span>
+        <span class="h-2 w-2 rounded-full bg-neutral-300 dark:bg-neutral-700"></span>
+        <span class="h-2 w-2 rounded-full bg-neutral-300 dark:bg-neutral-700"></span>
+      </div>
+    </div>
+
+<div class="mask-x-fade">
+  <div class="max-w-[120rem] mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+    <div
+      class="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 [-ms-overflow-style:none] [scrollbar-width:none]"
+      style="-webkit-overflow-scrolling: touch;"
+    >
+      @for (i of heroPins; track i.src) {
+        <div
+          class="snap-start shrink-0 w-64 sm:w-72 h-96 rounded-3xl overflow-hidden bg-neutral-100 dark:bg-neutral-900 ring-1 ring-black/5 dark:ring-white/10 hover:scale-[1.02] transition"
+        >
+          <img [src]="i.src" [alt]="i.alt" class="w-full h-full object-cover" />
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<section class="py-10 sm:py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h3 class="text-sm uppercase tracking-widest text-neutral-500 dark:text-neutral-400 mb-4">
+      Trending today
+    </h3>
+
+    <!-- Simple grid: 1 col on mobile, 2 on sm, 3 on md, 4 on lg -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      @for (pin of pins; track $index) {
+        <article
+          class="rounded-2xl overflow-hidden ring-1 ring-black/5 dark:ring-white/10 bg-neutral-100 dark:bg-neutral-900 hover:scale-[1.01] transition"
+        >
+          <img
+            [src]="pin.src"
+            [alt]="pin.alt"
+            class="w-full h-64 object-cover"
+          />
+          <div class="p-3">
+            <div class="flex items-center gap-2">
+              <img
+                [src]="pin.authorAvatar"
+                [alt]="pin.author"
+                class="h-6 w-6 rounded-full object-cover"
+              />
+              <p class="text-sm font-medium truncate">{{ pin.title }}</p>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+
+    <div class="mt-8 flex justify-center">
+      @if (pins.length > 0) {
+        <button
+          class="h-10 px-5 rounded-full border border-neutral-300 dark:border-neutral-700
+                 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition flex items-center justify-center"
+        >
+          Load more
+        </button>
+      } @else {
+        <p class="text-neutral-500 dark:text-neutral-400">No pins yet.</p>
+      }
+    </div>
+  </div>
+</section>
+
+
+  <!-- Footer -->
+  <footer class="border-t border-neutral-200 dark:border-neutral-800 py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-neutral-500 dark:text-neutral-400">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p>© {{year}} Inspic</p>
+        <nav class="flex gap-4">
+          <a href="#" class="hover:text-neutral-900 dark:hover:text-white">Terms</a>
+          <a href="#" class="hover:text-neutral-900 dark:hover:text-white">Privacy</a>
+          <a href="#" class="hover:text-neutral-900 dark:hover:text-white">Contact</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
