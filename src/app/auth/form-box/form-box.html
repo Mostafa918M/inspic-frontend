@@ -21,6 +21,8 @@
           <span>
             Wrong email? <a class="font-medium text-neutral-900 dark:text-white hover:underline" routerLink="/auth/sign-up">Create a new account</a> or Back
             to <a class="font-medium text-neutral-900 dark:text-white hover:underline" routerLink="/auth/sign-in">Sign In</a></span>
+        } @else if (is('reset-password')) {
+          <span>Remember your password? </span><a class="ml-1 font-medium text-neutral-900 dark:text-white hover:underline" routerLink="/auth/sign-in"> Sign In</a>
         }
       </div>
     </aside>
@@ -37,8 +39,8 @@
             <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Verify your email</h2>
           } @else if( is('forgot-password')) {
             <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Forget your password?</h2>
-          } @else {
-            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Forgot your password?</h2>
+          } @else if(is('reset-password')) {
+            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Reset your password</h2>
           }
         </header>
 

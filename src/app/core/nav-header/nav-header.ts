@@ -24,7 +24,6 @@ export class NavHeader {
 profileOpen = false;
 
  constructor() {
-    // Ensure profile is loaded even if Profile page hasn't been opened yet
     this.user.ensureProfile();
   }
 
@@ -41,7 +40,7 @@ profileOpen = false;
     return this.u?.username || full || 'User';
   }
 
-    onAvatarError(e: Event) { (e.target as HTMLImageElement).src = 'assets/avatar-fallback.png'; }
+  onAvatarError(e: Event) { (e.target as HTMLImageElement).src = 'assets/avatar-fallback.png'; }
 
 
   toggleProfile() { this.profileOpen = !this.profileOpen; }
@@ -55,16 +54,21 @@ profileOpen = false;
   @HostListener('document:keydown.escape')
   closeOnEsc() { this.profileOpen = false;}
 
+
+  onSearch(e: KeyboardEvent) {
+    const input = (e.target as HTMLInputElement).value.trim();
+    if(e.key ==='Enter'&& input){
+      this.router.navigate(['/search'], { queryParams: { q: input } });
+    }
+  }
   onSignOut() {
     this.auth.signOut().subscribe({
       next: () => {
-        this.auth.clearSession();          
         this.router.navigate(['']); 
       },
       error: (err) => {
         console.error('Error signing out', err);
         
-        this.auth.clearSession();
         this.router.navigate(['']);
       }
     });

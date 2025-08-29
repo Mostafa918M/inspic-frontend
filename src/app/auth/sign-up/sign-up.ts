@@ -76,7 +76,6 @@ export class SignUp {
 
     this.auth
       .signUp(payload)
-      .pipe(first())
       .subscribe({
         next: () => {
           this.loading = false;

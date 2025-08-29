@@ -1,0 +1,103 @@
+<div class="max-w-6xl mx-auto p-6">
+  <header class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-semibold">Create Pin</h1>
+    
+  </header>
+
+  <form id="createPinForm" class="grid gap-8 lg:grid-cols-12" [formGroup]="createForm" (ngSubmit)="onSubmit()">
+
+    <!-- LEFT: dropzone / preview -->
+    <div class="lg:col-span-5 space-y-4">
+      <div
+        class="relative w-full bg-neutral-100 border-2 border-dashed border-neutral-300
+               rounded-3xl flex items-center justify-center text-center text-neutral-600
+               min-h-[480px] cursor-pointer select-none"
+        [class.ring-2]="dragOver" [class.ring-neutral-900/10]="dragOver"
+        (click)="fileInput.click()"
+        (drop)="onDrop($event)" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)">
+
+        @if (!previewUrl) {
+          <div class="px-6">
+            <svg width="32" height="32" viewBox="0 0 24 24" class="mx-auto opacity-70"><path fill="currentColor" d="M12 3l4 4h-3v6h-2V7H8l4-4zm-6 14h12v2H6v-2z"/></svg>
+            <p class="mt-3 font-medium">Choose a file or drag and drop it here</p>
+            <p class="mt-1 text-sm text-neutral-400">
+              We recommend high-quality .jpg (&lt; 20MB) or .mp4 (&lt; 200MB).
+            </p>
+          </div>
+        } @else {
+          <img [src]="previewUrl" alt="Preview"
+               class="absolute inset-0 w-full h-full object-cover rounded-3xl">
+        }
+      </div>
+
+      <input #fileInput type="file" class="sr-only"
+             accept="image/*,video/*" (change)="onFileSelected($event)">
+
+
+
+      @if (createForm.get('media')?.invalid && (createForm.dirty || createForm.touched)) {
+        <p class="text-sm text-rose-600">Please choose a file.</p>
+      }
+    </div>
+
+    <div class="lg:col-span-7 space-y-5">
+      <div>
+        <label for="title" class="block text-sm text-neutral-500 mb-1">Title</label>
+        <input id="title" type="text" formControlName="title" placeholder="Add a title"
+               class="w-full h-12 rounded-2xl px-4 bg-neutral-100 border border-neutral-200
+                      placeholder-neutral-400 outline-none
+                      focus:border-neutral-400 focus:ring-4 focus:ring-neutral-900/5">
+        @if (createForm.get('title')?.invalid && (createForm.get('title')?.touched || createForm.get('title')?.dirty)) {
+          <p class="text-sm text-rose-600 mt-1">Title is required.</p>
+        }
+      </div>
+
+      <div>
+        <label class="block text-sm text-neutral-500 mb-1">Description</label>
+        <textarea rows="5" formControlName="description" placeholder="Add a detailed description"
+                  class="w-full rounded-2xl px-4 py-3 bg-neutral-100 border border-neutral-200
+                         placeholder-neutral-400 outline-none
+                         focus:border-neutral-400 focus:ring-4 focus:ring-neutral-900/5"></textarea>
+      </div>
+
+      <div>
+        <label class="block text-sm text-neutral-500 mb-1">Link</label>
+        <input type="url" formControlName="link" placeholder="Add a link"
+               class="w-full h-12 rounded-2xl px-4 bg-neutral-100 border border-neutral-200
+                      placeholder-neutral-400 outline-none
+                      focus:border-neutral-400 focus:ring-4 focus:ring-neutral-900/5">
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        
+        <div>
+          <label class="block text-sm text-neutral-500 mb-1">Tagged topics</label>
+          <input type="text" formControlName="keywords" placeholder="Search for a tag"
+                 class="w-full h-12 rounded-2xl px-4 bg-neutral-100 border border-neutral-200
+                        placeholder-neutral-400 outline-none
+                        focus:border-neutral-400 focus:ring-4 focus:ring-neutral-900/5">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm text-neutral-500 mb-1">Visibility</label>
+        <select formControlName="privacy"
+                class="w-full h-12 rounded-2xl px-4 bg-neutral-100 border border-neutral-200
+                       outline-none focus:border-neutral-400 focus:ring-4 focus:ring-neutral-900/5">
+          <option value="public">Public</option>
+          <option value="private">Private</option>
+        </select>
+        
+      </div>
+      <button type="submit" form="createPinForm"
+            [disabled]="createForm.invalid || loading"
+            class="h-11 px-6 rounded-3xl bg-red-600 text-white font-semibold
+                   hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed">
+      {{ loading ? 'Uploading…' : 'Publish' }}
+    </button>
+      
+    </div>
+    
+  </form>
+  
+</div>

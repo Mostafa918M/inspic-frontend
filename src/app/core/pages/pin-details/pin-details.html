@@ -1,0 +1,156 @@
+@if(loading){
+    <div class="px-4 sm:px-6 lg:px-8 py-10">
+        <div class="text-sm text-neutral-500">Loading…</div>
+    </div>
+    } @else if (vm.state === 'error') {
+    <div class="error">
+        {{ vm.error }}
+    </div>
+    } @else if (vm.state === 'loaded' && !pin) {
+    <div class="px-4 sm:px-6 lg:px-8 py-10">
+        <div class="text-sm text-neutral-500">Pin not found.</div>
+    </div>
+}@else{
+
+
+<div class="mx-auto max-w-[1200px] px-4 py-6 grid gap-6 lg:grid-cols-[1fr_360px]">
+
+  <article class="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden max-w-[800px] mx-auto lg:ml-0">
+
+    <div class="relative bg-gray-50">
+      <img
+        [src]="apiBase + pin?.media.uri"
+        [alt]="pin?.alt || pin?.title || 'Pin image'"
+        class="w-full h-auto object-contain"
+      />
+      <button
+        type="button"
+        aria-label="Zoom image"
+        class="absolute bottom-4 right-4 rounded-full bg-white/90 p-2 shadow hover:bg-white"
+        (click)="onZoom?.(pin)"
+      >
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 3h6v6M9 21H3v-6M21 15v6h-6M3 9V3h6"/>
+        </svg>
+      </button>
+    </div>
+
+<div class="flex items-center justify-between px-4 py-3 border-t bg-white">
+  <button type="button"
+        class="flex items-center gap-1 text-sm cursor-pointer"
+        (click)="onLike(pin)">
+  <svg class="w-5 h-5"
+       viewBox="0 0 24 24"
+       [attr.fill]="isLiked(pin?._id) ? '#ef4444' : 'none'"
+       [attr.stroke]="isLiked(pin?._id) ? '#ef4444' : 'currentColor'">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+             2 6 4 4 6.5 4c1.74 0 3.41 1.01 4.22 2.59C11.09
+             5.01 12.76 4 14.5 4 17 4 19 6 19 8.5c0 3.78-3.4
+             6.86-8.55 11.54L12 21.35z"/>
+  </svg>
+  <span [class.text-red-600]="isLiked(pin?._id)"
+        [class.text-gray-700]="!isLiked(pin?._id)">
+    {{ pin?.likeCount || 0  }}
+  </span>
+</button>
+
+  <div class="flex items-center gap-2">
+    <button type="button"
+            class="rounded-full bg-red-600 px-4 py-2 text-white text-sm font-semibold hover:bg-red-700 cursor-pointer"
+            (click)="onSave?.(pin)">
+      Save
+    </button>
+
+    <button type="button" 
+            class="flex items-center gap-1 text-sm text-gray-700 hover:text-blue-600 border px-3 py-2 rounded-full cursor-pointer"
+            (click)="onDownload?.(pin)">
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/>
+      </svg>
+      Download
+    </button>
+  </div>
+</div>
+
+    <div class="flex flex-col px-4 py-4 gap-2">
+      <h1 class="truncate text-base font-semibold text-gray-900">
+        {{ pin?.title || 'Product name' }}
+      </h1>
+      <p class="text-sm text-gray-600">
+        {{ pin?.description || 'No description available' }}
+      </p>
+      <div class="flex items-center gap-2 cursor-pointer">
+          <img class="h-6 w-6 rounded-full object-cover" [src]="pin?.publisher?.avatar" alt="avatar" />
+           <span class="text-xs">{{ pin?.publisher?.username }}</span>
+        </div>
+     
+
+      @if (pin?.ctaUrl || pin?.link) {
+        <a
+          [href]="pin?.link || pin?.ctaUrl"
+          target="_blank" rel="noopener"
+          class="mt-2 shrink-0 rounded-full border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 w-fit"
+        >
+          Visit site
+        </a>
+      }
+    </div>
+  </article>
+
+
+
+ <div class="px-4 sm:px-6 lg:px-8 py-10">
+  <div class="grid grid-cols-2 gap-6">
+    @for (p of safePins; track p._id) {
+      <article
+        class="rounded-2xl overflow-hidden relative group bg-neutral-100 dark:bg-neutral-900 ring-1 ring-black/5 dark:ring-white/10 hover:scale-[1.01] transition cursor-pointer"
+      >
+        <div class="relative w-full">
+          @if (p.media.type === 'image') {
+            <img
+              [src]="apiBase + p.media.uri"
+              [alt]="p.title"
+              class="w-full h-auto object-contain"
+            />
+          }
+          @else if (p.media.type === 'video') {
+            <video
+              [src]="apiBase + p.media.uri"
+              class="w-full h-auto object-contain"
+              playsinline preload="metadata"
+              controls
+            ></video>
+          }
+
+          <div
+            class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex flex-col justify-end p-4 text-white"
+          >
+            <h3 class="font-medium text-sm truncate">{{ p.title }}</h3>
+            <div class="flex justify-between items-center mt-2">
+              @if(!p.link) {
+                <div class="text-xs"></div>
+              } @else {
+                <a [href]="p.link || '#'" target="_blank" rel="noopener" class="text-xs underline">
+                  Visit site
+                </a>
+              }
+              @if (p.publisher; as pub) {
+                <div class="flex items-center gap-2">
+                  <img class="h-6 w-6 rounded-full object-cover" [src]="pub.avatar" alt="avatar" />
+                  <span class="text-xs">{{ pub.username }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </article>
+    }
+  </div>
+</div>
+
+  <div class="hidden lg:block"></div>
+</div>
+}

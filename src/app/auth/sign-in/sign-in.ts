@@ -11,7 +11,6 @@ import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../services/auth';
 import { GoogleAuth } from '../../services/google-auth';
 
-
 @Component({
   selector: 'app-sign-in',
   standalone: true,
@@ -22,8 +21,7 @@ import { GoogleAuth } from '../../services/google-auth';
 export class SignIn {
   private auth = inject(Auth);
   private router = inject(Router);
-    private google = inject(GoogleAuth);
-
+  private google = inject(GoogleAuth);
 
   SignInForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -48,38 +46,40 @@ export class SignIn {
 
     const email = (this.SignInForm.value.email || '').trim();
     const password = this.SignInForm.value.password as string;
-
     const payload = { email: email, password };
 
     this.auth.signIn(payload).subscribe({
-      next: (res) => {
-        this.loading = false;
+      next: () => {
+        
+        this.auth.me().subscribe({
+          next: (res) => {
+            this.loading = false;
 
-        const user = res?.data?.user ?? res?.user ?? null;
+            const user = res?.data.user??res?.user?? null;
+            const isVerified = user?.isEmailVerified ?? true;
+            if (!isVerified) {
+              this.successMsg = 'Please verify your email to continue.';
+              this.router.navigate(['/verify-email'], { queryParams: { email } });
+              return;
+            }
+    
+            this.successMsg = 'Signed in successfully.';
+           console.log('Signed in user:', user);
+            this.router.navigate(['home']);
+          },
+          error: () => {
+            this.loading = false;
+            this.errorMsg = 'Session check failed after sign-in. Please try again.';
 
-        const isVerified = user?.isEmailVerified ?? true;
+          },
+        })
 
-        if (!isVerified) {
-          this.successMsg = 'Please verify your email to continue.';
-          this.router.navigate(['/verify-email'], { queryParams: { email } });
-          return;
-        }
 
-        this.successMsg = 'Signed in successfully.';
-        const token =
-          res?.data?.accessToken || // if your sendResponse wraps data
-          res?.accessToken || // if it’s top-level
-          '';
-
-        if (token) {
-          sessionStorage.setItem('accessToken', token); // or a service
-        }
-        this.router.navigate(['home']);
       },
       error: (err) => {
         this.loading = false;
 
-        const msg = (err?.error?.message || '').toLowerCase();
+        const msg = (err?.error?.message || '')
         this.errorMsg =
           err?.error?.message || 'Sign in failed. Please try again.';
 
@@ -90,14 +90,14 @@ export class SignIn {
     });
   }
 
-async googleSignIn() {
+  async googleSignIn() {
     if (this.loading) return;
     this.loading = true;
     this.errorMsg = '';
     this.successMsg = '';
     try {
       const clientId =
-        '486597157935-stn6eoocgi60pv8khvquftooeom6ufsr.apps.googleusercontent.com'; // or from environment
+        '486597157935-stn6eoocgi60pv8khvquftooeom6ufsr.apps.googleusercontent.com'; 
       const hint = (this.SignInForm.value.email || '') as string;
       const idToken = await this.google.getIdToken(clientId, hint);
 
@@ -110,7 +110,7 @@ async googleSignIn() {
           if (token) {
             sessionStorage.setItem('accessToken', token);
           }
-          this.router.navigate(['profile']);
+          this.router.navigate(['home']);
         },
         error: (err) => {
           this.loading = false;

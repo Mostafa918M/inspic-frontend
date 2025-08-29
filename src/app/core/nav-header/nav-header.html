@@ -40,14 +40,12 @@
         <input
           type="text"
           placeholder="Search by Inspiration"
-          class="w-full rounded-xl border border-neutral-300 bg-neutral-200/60 pl-9 pr-3 py-2 text-sm placeholder:text-neutral-500 focus:border-neutral-400 focus:bg-white focus:outline-none"
+          class="w-full rounded-xl border border-neutral-300 bg-neutral-200/60 pl-9 pr-3 py-2 text-sm placeholder:text-neutral-500 focus:border-neutral-400 focus:bg-white focus:outline-none" (keyup)="onSearch($event)"
         />
       </label>
     </div>
 
-    <!-- Right: Buttons + Avatar -->
     <div class="flex items-center gap-2">
-      <!-- Avatar + Profile dropdown -->
       <div class="relative" data-profile>
         <button
           class="inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-1 ring-neutral-300 cursor-pointer"
@@ -73,7 +71,6 @@
       <div class="h-px bg-neutral-800"></div>
 
 
-          <!-- Primary -->
           <nav class="py-2">
             @for (item of profilePrimary; track item.label) {
             <a
@@ -104,27 +101,12 @@
         }
       </div>
       <button
-        class="hidden sm:inline-flex h-9 items-center justify-center rounded-full bg-rose-600 px-3 text-sm text-white hover:opacity-90"
+        class="hidden sm:inline-flex h-9 items-center justify-center rounded-full bg-rose-600 px-3 text-sm text-white hover:opacity-90 cursor-pointer "
+        routerLink="/create-pin"
       >
         Create
       </button>
-      <!-- Mobile hamburger -->
-      <button
-        class="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-neutral-200/70"
-      >
-        <svg
-          class="h-5 w-5"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          fill="none"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-width="2"
-            d="M4 7h16M4 12h16M4 17h16"
-          />
-        </svg>
-      </button>
+
     </div>
   </div>
 </header>

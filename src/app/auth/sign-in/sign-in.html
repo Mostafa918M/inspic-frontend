@@ -16,7 +16,9 @@
     class="h-11 rounded-xl px-3.5 bg-white dark:bg-neutral-900/60 border border-neutral-300 dark:border-neutral-700
            placeholder:text-neutral-400 text-[15px] outline-none
            focus:border-neutral-500 dark:focus:border-neutral-500 focus:ring-4 focus:ring-neutral-900/5 dark:focus:ring-white/5">
-
+  @if(SignInForm.get('password')?.invalid && (SignInForm.get('password')?.touched || SignInForm.get('password')?.dirty)) {
+    @if (SignInForm.get('password')?.hasError('required')) { <p class="text-sm text-rose-600">Password is required.</p> }
+  }
   <button
     type="submit"
     [disabled]="SignInForm.invalid || loading"

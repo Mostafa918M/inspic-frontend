@@ -1,12 +1,25 @@
 import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
+import { CanActivateFn, Router, UrlTree } from '@angular/router';
+import { Auth } from '../services/auth';
 
 export const authGuard: CanActivateFn = (route, state) => {
    const router = inject(Router);
-  const isBrowser = typeof window !== 'undefined';
-  const token = isBrowser
-    ? (sessionStorage.getItem('accessToken') || localStorage.getItem('accessToken'))
-    : null;
-
-  return token ? true : router.createUrlTree(['/sign-in']);
+   const auth = inject(Auth);
+ return new Promise<boolean | UrlTree>((resolve) => {
+auth.me()
+      .subscribe({
+        next: () => resolve(true),
+        error: () => {
+          auth.getNewAccessToken().subscribe({
+            next: () => {
+              auth.me().subscribe({
+                next: () => resolve(true),
+                error: () => resolve(router.createUrlTree(['/sign-in'])),
+              });
+            },
+            error: () => resolve(router.createUrlTree(['/sign-in'])),
+          });
+        },
+      });
+  });
 };

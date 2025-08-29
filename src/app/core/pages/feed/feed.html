@@ -1,0 +1,135 @@
+<div class="shell">
+  @if (vm.state === 'loading') {
+  <div class="px-4 sm:px-6 lg:px-8 py-10">
+    <div class="text-sm text-neutral-500">Loading…</div>
+  </div>
+  } @else if (vm.state === 'error') {
+  <div class="error">
+    {{ vm.error }}
+  </div>
+  } @else if (vm.state === 'loaded') {
+  <div class="px-4 sm:px-6 lg:px-8 py-10">
+    <div class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6">
+      @for (p of vm.pins; track p._id) {
+      <article
+        class="mb-6 break-inside-avoid rounded-2xl overflow-hidden relative group bg-neutral-100 dark:bg-neutral-900 ring-1 ring-black/5 dark:ring-white/10 hover:scale-[1.01] transition cursor-pointer"
+      >
+        <div class="relative w-full" (click)="onPinClick(p)">
+          @if (p.media.type === 'image') {
+          <img
+            [src]="apiBase + p.media.uri"
+            [alt]="p.title"
+            class="w-full h-auto object-contain"
+          />
+          } @else if (p.media.type === 'video') {
+          <video
+            [src]="apiBase + p.media.uri"
+            class="w-full h-auto object-contain"
+            playsinline
+            preload="metadata"
+            controls
+          ></video>
+          }
+
+          <!-- Hover overlay -->
+          <div
+            class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex flex-col justify-end p-4 text-white"
+          >
+            <h3 class="font-medium text-sm truncate">{{ p.title }}</h3>
+            <div class="flex justify-between items-center mt-2">
+              @if(!p.link) {
+              <div class="text-xs"></div>
+              } @else {
+              <a
+                [href]="p.link || '#'"
+                target="_blank"
+                rel="noopener"
+                class="text-xs underline"
+                >Visit site</a
+              >
+              } @if (p.publisher; as pub) {
+              <div class="flex items-center gap-2">
+                <img
+                  class="h-6 w-6 rounded-full object-cover"
+                  [src]="pub.avatar"
+                  alt="avatar"
+                />
+                <span class="text-xs">{{ pub.username }}</span>
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+      </article>
+      }
+    </div>
+  </div>
+  }
+</div>
+<!-- Popular section -->
+<div class="px-4 sm:px-6 lg:px-8 py-8 border-t border-black/5 dark:border-white/10">
+  <h2 class="text-lg font-semibold mb-4">Popular</h2>
+
+  @if (popularLoading) {
+    <div class="text-sm text-neutral-500">Loading popular…</div>
+  } @else if (popularError) {
+    <div class="text-sm text-red-600">{{ popularError }}</div>
+  } @else {
+    <div class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6">
+      @for (p of popularPins; track p._id) {
+        <article
+          class="mb-6 break-inside-avoid rounded-2xl overflow-hidden relative group bg-neutral-100 dark:bg-neutral-900 ring-1 ring-black/5 dark:ring-white/10 hover:scale-[1.01] transition cursor-pointer"
+        >
+          <div class="relative w-full" (click)="onPinClick(p)">
+            @if (p.media.type === 'image') {
+              <img
+                [src]="apiBase + p.media.uri"
+                [alt]="p.title"
+                class="w-full h-auto object-contain"
+              />
+            } @else if (p.media.type === 'video') {
+              <video
+                [src]="apiBase + p.media.uri"
+                class="w-full h-auto object-contain"
+                playsinline
+                preload="metadata"
+                controls
+              ></video>
+            }
+
+            <!-- Hover overlay -->
+            <div
+              class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex flex-col justify-end p-4 text-white"
+            >
+              <h3 class="font-medium text-sm truncate">{{ p.title }}</h3>
+              <div class="flex justify-between items-center mt-2">
+                @if (!p.link) {
+                  <div class="text-xs"></div>
+                } @else {
+                  <a
+                    [href]="p.link || '#'"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-xs underline"
+                    (click)="$event.stopPropagation()"
+                    >Visit site</a
+                  >
+                }
+                @if (p.publisher; as pub) {
+                  <div class="flex items-center gap-2">
+                    <img
+                      class="h-6 w-6 rounded-full object-cover"
+                      [src]="pub.avatar"
+                      alt="avatar"
+                    />
+                    <span class="text-xs">{{ pub.username }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</div>

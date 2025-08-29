@@ -1,39 +1,120 @@
 <!-- profile.html -->
-<app-nav-header></app-nav-header>
-  <h1>Your Profile</h1>
+<div class="mx-auto w-full max-w-4xl px-4 py-6">
+  <h1 class="mb-4 text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">Your Profile</h1>
 
   @if (loading) {
-    <div class="notice muted">Loading…</div>
+    <div class="mb-4 rounded-xl border border-gray-200 bg-white p-4 text-sm text-gray-600 shadow-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
+      Loading…
+    </div>
   } @else {
-    @if (errorMsg) { <div class="notice error">{{ errorMsg }}</div> }
+    @if (errorMsg) {
+      <div class="mb-4 flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-200">
+        <span class="inline-block h-2 w-2 translate-y-2 rounded-full bg-red-500"></span>
+        <div>{{ errorMsg }}</div>
+      </div>
+    }
 
     @if (u) {
-      <div class="card">
-        <div class="header">
+      <div class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <!-- Header -->
+        <div class="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
           @if (u.avatar) {
-            <img [src]="u.avatar" alt="avatar" class="avatar" />
+            <img
+              [src]="u.avatar"
+              alt="avatar"
+              class="avatar h-24 w-24 rounded-full object-cover ring-1 ring-gray-200 dark:ring-gray-700"
+            />
           } @else {
-            <div class="avatar fallback">{{ avatarFallback(u.username) }}</div>
+            <div
+              class="avatar fallback flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-pink-500 to-rose-500 text-3xl font-bold text-white ring-1 ring-gray-200 dark:ring-gray-700"
+            >
+              {{ avatarFallback(u.username) }}
+            </div>
           }
+
           <div class="who">
-            <div class="name">{{ fullName(u) }}</div>
-            <div class="username">@{{ u.username }}</div>
-            <div class="email">{{ u.email }}</div>
-            <span class="role">{{ u.role }}</span>
+            <div class="name text-xl font-semibold leading-6 text-gray-900 dark:text-gray-100">
+              {{ fullName(u) }}
+            </div>
+            <div class="username mt-0.5 text-sm text-gray-500 dark:text-gray-400">@{{ u.username }}</div>
+            <div class="email mt-1 text-sm text-gray-600 dark:text-gray-300">{{ u.email }}</div>
+
+            <span
+              class="role mt-3 inline-flex items-center gap-1 rounded-full border border-gray-200 bg-gray-50 px-2.5 py-1 text-xs font-medium text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+            >
+              {{ u.role }}
+            </span>
           </div>
         </div>
 
+        <!-- Stats -->
+        <div
+          class="stats mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-7"
+        >
+          <div
+            class="group rounded-xl border border-gray-200 bg-white p-3 text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900"
+          >
+            <strong class="block text-base font-semibold text-gray-900 dark:text-gray-100">
+              {{ u.followers?.length || 0 }}
+            </strong>
+            <span class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Followers</span>
+          </div>
 
-        <div class="stats">
-          <div><strong>{{ u.followers?.length || 0 }}</strong><span>Followers</span></div>
-          <div><strong>{{ u.following?.length || 0 }}</strong><span>Following</span></div>
-          <div><strong>{{ u.boards?.length || 0 }}</strong><span>Boards</span></div>
-          <div><strong>{{ u.pins?.length || 0 }}</strong><span>Pins</span></div>
-          <div><strong>{{ u.bookmarks?.length || 0 }}</strong><span>Bookmarks</span></div>
-          <div><strong>{{ u.likedPins?.length || 0 }}</strong><span>Liked</span></div>
-          <div><strong>{{ u.savedSearches?.length || 0 }}</strong><span>Saved searches</span></div>
+          <div
+            class="group rounded-xl border border-gray-200 bg-white p-3 text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900"
+          >
+            <strong class="block text-base font-semibold text-gray-900 dark:text-gray-100">
+              {{ u.following?.length || 0 }}
+            </strong>
+            <span class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Following</span>
+          </div>
+
+          <div
+            class="group rounded-xl border border-gray-200 bg-white p-3 text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900"
+          >
+            <strong class="block text-base font-semibold text-gray-900 dark:text-gray-100">
+              {{ u.boards?.length || 0 }}
+            </strong>
+            <span class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Boards</span>
+          </div>
+
+          <div
+            class="group rounded-xl border border-gray-200 bg-white p-3 text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900"
+          >
+            <strong class="block text-base font-semibold text-gray-900 dark:text-gray-100">
+              {{ u.pins?.length || 0 }}
+            </strong>
+            <span class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Pins</span>
+          </div>
+
+          <div
+            class="group rounded-xl border border-gray-200 bg-white p-3 text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900"
+          >
+            <strong class="block text-base font-semibold text-gray-900 dark:text-gray-100">
+              {{ u.bookmarks?.length || 0 }}
+            </strong>
+            <span class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Bookmarks</span>
+          </div>
+
+          <div
+            class="group rounded-xl border border-gray-200 bg-white p-3 text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900"
+          >
+            <strong class="block text-base font-semibold text-gray-900 dark:text-gray-100">
+              {{ u.likedPins?.length || 0 }}
+            </strong>
+            <span class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Liked</span>
+          </div>
+
+          <div
+            class="group rounded-xl border border-gray-200 bg-white p-3 text-center shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-gray-800 dark:bg-gray-900"
+          >
+            <strong class="block text-base font-semibold text-gray-900 dark:text-gray-100">
+              {{ u.savedSearches?.length || 0 }}
+            </strong>
+            <span class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">Saved searches</span>
+          </div>
         </div>
       </div>
     }
   }
-
+</div>

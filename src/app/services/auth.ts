@@ -37,7 +37,9 @@ export class Auth {
   forgetPassword(email: string) {
     return this.http.post<any>(`${this.api}/api/v1/auth/forget-password`, { email });
   }
-
+  resetPassword(payload:{token:string; newPassword:string}){
+    return this.http.post<any>(`${this.api}/api/v1/auth/reset-password`, payload);
+  }
   googleCallback(idToken: string) {
     return this.http.post<any>(`${this.api}/api/v1/auth/callback`, { idToken },{withCredentials: true});
   }
@@ -45,8 +47,10 @@ export class Auth {
   signOut() {
     return this.http.post<any>(`${this.api}/api/v1/auth/signout`, {},{withCredentials: true});
   }
-   clearSession() {
-    sessionStorage.removeItem('accessToken');
-    localStorage.removeItem('accessToken');
+  me(){
+    return this.http.get<any>(`${this.api}/api/v1/auth/me`, { withCredentials: true });
+  }
+  getNewAccessToken() {
+    return this.http.post<any>(`${this.api}/api/v1/auth/refresh-token`,{},{withCredentials: true});
   }
 }
